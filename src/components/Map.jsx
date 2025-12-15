@@ -33,7 +33,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-export default function Map() {
+export default function Map({firebaseUser}) {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export default function Map() {
 
     return (
         <div className="map-root" style={{ height: "100vh", width: "100%" }}>
-        <MapContainer center={[37.7749, -122.4194]} zoom={4} style={{ height: "100%", width: "100%" }}>
+        <MapContainer center={[51.5072, 0.1276]} zoom={4} style={{ height: "100%", width: "100%" }}>
             <InvalidateMap />
             <TileLayer url={tileUrl} attribution='&copy; OpenStreetMap contributors' />
             {users.map((u) =>

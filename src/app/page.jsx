@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import Map from "../components/Map"; // normal import now that this page is client-only
 import { auth, githubProvider, db } from "../../lib/firebaseClient"; // client firebase init
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { signInWithPopup, signOut, onAuthStateChanged, GithubAuthProvider } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import {
   fetchGitHubProfile,
@@ -36,16 +36,27 @@ export default function Home() {
     try {
       const result = await signInWithPopup(auth, githubProvider);
       console.log("SIGNIN RESULT", result);
-      console.log("CREDENTIAL (maybe null):", result?.credential);
-      console.log("ACCESS TOKEN:", result?.credential?.accessToken);
-      const token = result?.credential?.accessToken;
-      const firebaseUser = result.user; // use clear name
 
+      const credential = GithubAuthProvider.credentialFromResult(result);
+
+      if (!credential) {
+        console.log("Failed to extract GitHub credential from FIrebase Auth result");
+        alert("Authentication succeeded but failed to get GitHub access permissions. Please try again.");
+        return;
+      }
+
+      console.log("CREDENTIAL (maybe null):", credential);
+
+      const token = credential?.accessToken;
       if (!token){
         console.error("No GitHub access token returned from Firebase Auth. Check provider config.");
         alert("GitHub login succeeded but no access token was returned. Check console.");
         return;
       }
+
+      console.log("ACCESS TOKEN:", token);
+      
+      const firebaseUser = result.user; // use clear name
 
       // fetch GitHub data using token (do NOT store token in Firestore)
       const profile = await fetchGitHubProfile(token);
@@ -55,27 +66,26 @@ export default function Home() {
         return;
       }
 
-      const reposResult = await fetchGitHubRepos(token);
-      if (repos && reposResult.__error){
-        console.error("GitHub repos fetch failed:", reposResult);
-        alert(`GitHub repos fetch failed: ${reposResult.body?.message || reposResult.status}`);
-        // We can continue without repos (save profile and coords) — choose your policy.
-      }
+      // const reposResult = await fetchGitHubRepos(token);
+      // if (repos && reposResult.__error){
+      //   console.error("GitHub repos fetch failed:", reposResult);
+      //   alert(`GitHub repos fetch failed: ${reposResult.body?.message || reposResult.status}`);
+      //   // We can continue without repos (save profile and coords) — choose your policy.
+      // }
 
-      const repos = Array.isArray(reposResult) ? reposResult : [];
+      // const repos = Array.isArray(reposResult) ? reposResult : [];
+      const repos = await fetchGitHubProfile(token);
+      const safeRepos = Array.isArray(repos) ? repos : [];
 
       const enrichedRepos = await Promise.all(
-        repos.map(async (repo) => {
-          const langs = await fetchGitHubRepoLanguages(repo, token).catch(() => ({}));
-          return {
+        safeRepos.map(async (repo) => ({
             id: repo.id,
             name: repo.name,
             html_url: repo.html_url,
             description: repo.description,
-            languages: langs || {},
+            languages: await fetchGitHubRepoLanguages(repo, token),
             updated_at: repo.updated_at,
-          };
-        })
+        }))
       );
 
       const geo = await geocodeLocation(profile.location, {contactEmail: "your-email@example.com"});
@@ -96,8 +106,13 @@ export default function Home() {
 
       setUser(firebaseUser);
     } catch (err) {
-      console.error("login err", err);
-      alert("Login failed — check console");
+      if (err.code === "auth/account-exists-with-different-credential"){
+        console.error("Account exists with different credential:", err);
+        alert("An account already exists with the same email. PLease use a different sign-in method.");
+      } else {
+        console.error("login error:", err);
+        alert("Login failed — check console");
+      }
     }
   }
 
@@ -109,7 +124,7 @@ export default function Home() {
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       <div style={{ flex: 1 }}>
-        <Map />
+        <Map firebaseUser={user} />
       </div>
 
       <aside style={{ width: 360, padding: 16, borderLeft: "1px solid #eee" }}>
