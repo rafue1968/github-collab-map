@@ -127,21 +127,21 @@ export default function Home() {
         <Map firebaseUser={user} />
       </div>
 
-      <aside style={{ width: 360, padding: 16, borderLeft: "1px solid #eee" }}>
+      <aside className="sidebar">
         <h2>GitHub Map</h2>
         {user ? (
           <div>
-            <p>Signed in as {user.displayName || user.email}</p>
-            <button onClick={logout}>Logout</button>
+            <p>Signed in as <strong>{user.displayName || user.email}</strong></p>
+            <button className="btn" onClick={logout}>Logout</button>
           </div>
         ) : (
           <div>
             <p>Sign in with GitHub to claim your profile</p>
-            <button onClick={login}>Sign in with GitHub</button>
+            <button className="btn" onClick={login}>Sign in with GitHub</button>
           </div>
         )}
 
-        <div style={{ marginTop: 16 }}>
+        <div className="instructions">
           <h4>Instructions</h4>
           <ol>
             <li>Sign in with GitHub</li>

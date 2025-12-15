@@ -5,11 +5,11 @@ button { cursor: pointer; padding:6px 10px; border-radius:6px; background:#2563e
 
 
 /* Leaflet default styles */
-@import url("https://unpkg.com/leaflet/dist/leaflet.css");
+/* @import url("https://unpkg.com/leaflet/dist/leaflet.css"); */
 
 /* Optional: MarkerCluster styles */
-@import url("https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css");
-@import url("https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css");
+/* @import url("https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"); */
+/* @import url("https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"); */
 
 /* Map container size */
 #map {
@@ -18,3 +18,116 @@ button { cursor: pointer; padding:6px 10px; border-radius:6px; background:#2563e
 }
 
 
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  margin: 0;
+  background-color: #f6f8fa;
+  color: #24292f;
+}
+
+
+.sidebar {
+  width: 360px;
+  padding: 16px;
+  border-left: 1px solid #e1e4e8;
+  background-color: #ffffff;
+}
+
+h2, h4 {
+  font-weight: 600;
+  color: #24292f;
+}
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: #0366d6;
+  color: #ffffff;
+  transition: background 0.2s;
+}
+
+.btn:hover {
+  background-color: #005cc5;
+}
+
+a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.instructions {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #586069;
+}
+
+.map-root {
+  /* height: 100vh; */
+  /* width: 100%; */
+  overscroll-behavior: contain;
+}
+
+
+.leaflet-popup-content-wrapper {
+  border-radius: 6px;
+  padding: 0;
+  box-shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
+}
+
+.leaflet-popup-content {
+  margin: 0;
+}
+
+.gh-card {
+  width: 220px;
+  padding: 12px;
+  background: #ffffff;
+  color: #24292f;
+  font-size: 14px;
+}
+
+.gh-card-header{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gh-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e1e4e8;
+  object-fit: cover;
+}
+
+.gh-username {
+  font-weight: 600;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.gh-meta{
+  font-size: 12px;
+  color: #586069;
+}
+
+.gh-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #0366d6;
+}
+
+.gh-link:hover {
+  text-decoration: underline;
+}

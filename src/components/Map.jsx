@@ -58,11 +58,37 @@ export default function Map({firebaseUser}) {
             u.coords ? (
                 <Marker key={u.id} position={[u.coords.lat, u.coords.lng]}>
                 <Popup>
-                    <strong>{u.github_username}</strong>
+                    <div className="gh-card">
+                        <div className="gh-card-header">
+                            {u.avatar ? (
+                                <img
+                                 src={u.avatar} 
+                                 alt={u.github_username}
+                                 className="gh-avatar"
+                                 />
+                            )
+                            : (
+                                <div className="gh-avatar" />
+                            )}
+
+                            <div>
+                                <div className="gh-username">{u.github_username}</div>
+                                {u.location_text && (
+                                    <div className="gh-meta">{u.location_text}</div>
+                                )}
+                            </div>
+                        </div>
+
+                        <a 
+                            href={u.github_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="gh-link"
+                        >
+                            View GitHub Profile →
+                        </a>
+                    </div>
                     <br />
-                    <a href={u.github_url} target="_blank" rel="noreferrer">
-                    GitHub Profile
-                    </a>
                 </Popup>
                 </Marker>
             ) : null
