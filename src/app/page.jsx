@@ -66,19 +66,16 @@ export default function Home() {
         return;
       }
 
-      // const reposResult = await fetchGitHubRepos(token);
-      // if (repos && reposResult.__error){
-      //   console.error("GitHub repos fetch failed:", reposResult);
-      //   alert(`GitHub repos fetch failed: ${reposResult.body?.message || reposResult.status}`);
-      //   // We can continue without repos (save profile and coords) — choose your policy.
-      // }
+      const reposResult = await fetchGitHubRepos(token);
+      if (reposResult?.__error){
+        console.error("GitHub repos fetch failed:", reposResult);
+      }
+      const repos = Array.isArray(reposResult) ? reposResult : [];
 
-      // const repos = Array.isArray(reposResult) ? reposResult : [];
-      const repos = await fetchGitHubProfile(token);
-      const safeRepos = Array.isArray(repos) ? repos : [];
+      const TOP_REPOS_LIMIT = 20;
 
       const enrichedRepos = await Promise.all(
-        safeRepos.map(async (repo) => ({
+        repos.slice(0, TOP_REPOS_LIMIT).map(async (repo) => ({
             id: repo.id,
             name: repo.name,
             html_url: repo.html_url,
@@ -90,7 +87,8 @@ export default function Home() {
 
       const geo = await geocodeLocation(profile.location, {contactEmail: "your-email@example.com"});
 
-      await setDoc(doc(db, "users", firebaseUser.uid), {
+      await setDoc(
+        doc(db, "users", firebaseUser.uid), {
         claimed_by_uid: firebaseUser.uid,
         github_uid: profile.id ?? null,
         github_username: profile.login ?? null,
@@ -124,7 +122,7 @@ export default function Home() {
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       <div style={{ flex: 1 }}>
-        <Map firebaseUser={user} />
+        <Map />
       </div>
 
       <aside className="sidebar">

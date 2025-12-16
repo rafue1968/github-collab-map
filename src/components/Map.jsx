@@ -33,7 +33,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-export default function Map({firebaseUser}) {
+export default function Map() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -51,49 +51,52 @@ export default function Map({firebaseUser}) {
 
     return (
         <div className="map-root" style={{ height: "100vh", width: "100%" }}>
-        <MapContainer center={[51.5072, 0.1276]} zoom={4} style={{ height: "100%", width: "100%" }}>
-            <InvalidateMap />
-            <TileLayer url={tileUrl} attribution='&copy; OpenStreetMap contributors' />
-            {users.map((u) =>
-            u.coords ? (
-                <Marker key={u.id} position={[u.coords.lat, u.coords.lng]}>
-                <Popup>
-                    <div className="gh-card">
-                        <div className="gh-card-header">
-                            {u.avatar ? (
-                                <img
-                                 src={u.avatar} 
-                                 alt={u.github_username}
-                                 className="gh-avatar"
-                                 />
-                            )
-                            : (
-                                <div className="gh-avatar" />
-                            )}
-
-                            <div>
-                                <div className="gh-username">{u.github_username}</div>
-                                {u.location_text && (
-                                    <div className="gh-meta">{u.location_text}</div>
+            <div className="map-hint">
+                Scroll to zoom • Drag to move
+            </div>
+            <MapContainer center={[51.5072, 0.1276]} zoom={4} style={{ height: "100%", width: "100%" }}>
+                <InvalidateMap />
+                <TileLayer url={tileUrl} attribution='&copy; OpenStreetMap contributors' />
+                {users.map((u) =>
+                u.coords ? (
+                    <Marker key={u.id} position={[u.coords.lat, u.coords.lng]}>
+                    <Popup>
+                        <div className="gh-card">
+                            <div className="gh-card-header">
+                                {u.avatar ? (
+                                    <img
+                                    src={u.avatar} 
+                                    alt={u.github_username}
+                                    className="gh-avatar"
+                                    />
+                                )
+                                : (
+                                    <div className="gh-avatar" />
                                 )}
-                            </div>
-                        </div>
 
-                        <a 
-                            href={u.github_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="gh-link"
-                        >
-                            View GitHub Profile →
-                        </a>
-                    </div>
-                    <br />
-                </Popup>
-                </Marker>
-            ) : null
-            )}
-        </MapContainer>
+                                <div>
+                                    <div className="gh-username">{u.github_username}</div>
+                                    {u.location_text && (
+                                        <div className="gh-meta">{u.location_text}</div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <a 
+                                href={u.github_url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="gh-link"
+                            >
+                                View GitHub Profile →
+                            </a>
+                        </div>
+                        <br />
+                    </Popup>
+                    </Marker>
+                ) : null
+                )}
+            </MapContainer>
         </div>
     );
 }
