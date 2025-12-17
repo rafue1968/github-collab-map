@@ -1,5 +1,5 @@
 // src/app/api/users/route.js
-import { adminDb } from "../../../../lib/firebaseAdmin"; // adjust path if needed
+import { adminDb } from "../../../../lib/firebaseAdmin";
 
 export async function GET() {
   try {

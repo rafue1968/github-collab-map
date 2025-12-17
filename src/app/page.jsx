@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Map from "../components/Map"; // normal import now that this page is client-only
+// import Map from "../components/Map"; // normal import now that this page is client-only
 import { auth, githubProvider, db } from "../../lib/firebaseClient"; // client firebase init
 import { signInWithPopup, signOut, onAuthStateChanged, GithubAuthProvider } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -14,19 +14,23 @@ import {
 } from "../../lib/github";
 import UserDetailsPanel from "../components/UserDetailsPanel";
 import TopBar from "../components/TopBar";
+import dynamic from "next/dynamic";
+
+
+const Map = dynamic(() => import("../components/Map"), {
+  ssr: false,
+})
 
 export default function Home() {
   const [user, setUser] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    // subscribe to firebase auth state
     const unsub = onAuthStateChanged(auth, (u) => setUser(u));
     (async () => {
       try {
         const res = await fetch("/api/users");
         const j = await res.json();
-        // optionally set a local state for profiles if you want to show them client-side
       } catch (e) {
         console.error("failed to fetch /api/users", e);
       }
@@ -48,7 +52,6 @@ export default function Home() {
         return;
       }
 
-      console.log("CREDENTIAL (maybe null):", credential);
 
       const token = credential?.accessToken;
       if (!token){
@@ -56,15 +59,12 @@ export default function Home() {
         alert("GitHub login succeeded but no access token was returned. Check console.");
         return;
       }
-
-      console.log("ACCESS TOKEN:", token);
       
       const firebaseUser = result.user; // use clear name
 
       // fetch GitHub data using token (do NOT store token in Firestore)
       const profile = await fetchGitHubProfile(token);
       if (profile && profile._error){
-        console.error("GitHub profile fetch failed:", profile);
         alert(`GitHub profile fetch failed: ${profile.body?.message || profile.status}`);
         return;
       }
@@ -108,10 +108,8 @@ export default function Home() {
       setUser(firebaseUser);
     } catch (err) {
       if (err.code === "auth/account-exists-with-different-credential"){
-        console.error("Account exists with different credential:", err);
         alert("An account already exists with the same email. PLease use a different sign-in method.");
       } else {
-        console.error("login error:", err);
         alert("Login failed — check console");
       }
     }
