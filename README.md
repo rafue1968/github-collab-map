@@ -132,7 +132,7 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
 NEXT_PUBLIC_FIREBASE_APP_ID=...
 ```
 
-"GitHub OAuth Client ID and Secret must be configured in Firebase Authentication."
+> GitHub OAuth Client ID and Secret must be configured in Firebase Authentication.
 
 ### 4. Run the app
 ```bash
