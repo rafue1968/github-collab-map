@@ -27,11 +27,11 @@ Despite GitHub hosting millions of developers and projects:
 - There is no geographic visualisation of developers
 - Location data exists but is unstructured and underused
 - Discovering collaborators relies on:
-- - Social media
-- - Word of mouth
-- - Global (not local) signals
+    - Social media
+    - Word of mouth
+    - Global (not local) signals
 - Independent and early-career developers lack discoverability
-As a result, opportunities for local collaboration, mentorship, and project formation are missed.
+As a result, opportunities for **local collaboration, mentorship, and project formation** are missed.
 
 ---
 
@@ -132,7 +132,7 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
 NEXT_PUBLIC_FIREBASE_APP_ID=...
 ```
 
-* GitHub OAuth Client ID and Secret must be configured in Firebase Authentication.
+"GitHub OAuth Client ID and Secret must be configured in Firebase Authentication."
 
 ### 4. Run the app
 ```bash
