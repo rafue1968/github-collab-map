@@ -12,9 +12,12 @@ import {
   fetchGitHubRepoLanguages,
   geocodeLocation,
 } from "../../lib/github";
+import UserDetailsPanel from "../components/UserDetailsPanel";
+import TopBar from "../components/TopBar";
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     // subscribe to firebase auth state
@@ -120,34 +123,20 @@ export default function Home() {
   }
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
-      <div style={{ flex: 1 }}>
-        <Map />
-      </div>
+    <div style={{ display: "flex", height: "100vh", flexDirection: "column" }}>
 
-      <aside className="sidebar">
-        <h2>GitHub Map</h2>
-        {user ? (
-          <div>
-            <p>Signed in as <strong>{user.displayName || user.email}</strong></p>
-            <button className="btn" onClick={logout}>Logout</button>
-          </div>
-        ) : (
-          <div>
-            <p>Sign in with GitHub to claim your profile</p>
-            <button className="btn" onClick={login}>Sign in with GitHub</button>
-          </div>
-        )}
+      <TopBar
+        user={user}
+        onLogin={login}
+        onLogout={logout}
+      />
 
-        <div className="instructions">
-          <h4>Instructions</h4>
-          <ol>
-            <li>Sign in with GitHub</li>
-            <li>Claim your profile (the demo saves basic info)</li>
-            <li>Click pins on the map and request AI suggestions</li>
-          </ol>
+      <div style={{flex: 1, display: "flex"}}>
+        <div style={{ flex: 1 }}>
+        <Map onSelectUser={setSelectedUser} />
         </div>
-      </aside>
+        <UserDetailsPanel user={selectedUser} />
+      </div>
     </div>
   );
 }

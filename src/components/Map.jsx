@@ -9,13 +9,6 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import { useEffect, useState } from "react";
 
-const sampleUsers = [
-  { id: 1, name: "Alice", lat: 40.7128, lng: -74.006, github: "alice123" },
-  { id: 2, name: "Bob", lat: 34.0522, lng: -118.2437, github: "bobhub" },
-  { id: 3, name: "Rafue", lat: 36.0522, lng: -120.2437, github: "rafue1968" },
-
-];
-
 function InvalidateMap(){
     const map = useMap();
     useEffect(() => {
@@ -33,7 +26,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-export default function Map() {
+export default function Map({onSelectUser}) {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -59,7 +52,13 @@ export default function Map() {
                 <TileLayer url={tileUrl} attribution='&copy; OpenStreetMap contributors' />
                 {users.map((u) =>
                 u.coords ? (
-                    <Marker key={u.id} position={[u.coords.lat, u.coords.lng]}>
+                    <Marker 
+                        key={u.id} 
+                        position={[u.coords.lat, u.coords.lng]}
+                        eventHandlers={{
+                            click: () => onSelectUser(u),
+                        }}
+                        >
                     <Popup>
                         <div className="gh-card">
                             <div className="gh-card-header">

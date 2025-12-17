@@ -21,8 +21,8 @@ button { cursor: pointer; padding:6px 10px; border-radius:6px; background:#2563e
 body {
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   margin: 0;
-  background-color: #f6f8fa;
-  color: #24292f;
+  background: #0d1117; /* GitHub dark */
+  color: #c9d1d9;
 }
 
 
@@ -39,20 +39,25 @@ h2, h4 {
 }
 
 .btn {
-  display: inline-block;
   padding: 6px 12px;
+  border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 6px;
-  border: none;
   cursor: pointer;
-  background-color: #0366d6;
-  color: #ffffff;
-  transition: background 0.2s;
+  border: none;
 }
 
 .btn:hover {
   background-color: #005cc5;
+}
+
+.btn-primary {
+  background-color: #24292f; /* GitHub dark */
+  color: #ffffff;
+}
+
+.btn-primary:hover{
+  background-color: #1b1f23;
 }
 
 a {
@@ -71,11 +76,12 @@ a:hover {
 }
 
 .map-root {
+  position: relative;
   height: 100vh;
   width: 100%;
   overscroll-behavior: contain;
   border: 1px solid #e1e4e8;
-  background: #f6f8fa;
+  background: #0d1117;
   cursor: grab;
 }
 
@@ -151,4 +157,113 @@ a:hover {
   border-radius: 6px;
   pointer-events: none;
   z-index: 1000;
+}
+
+.details-panel {
+  width: 360px;
+  background: #161b22;
+  color: #c9d1d9;
+  border-left: 1px solid #30363d;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.details-panel h3 {
+  margin-top: 12px;
+  font-size: 18px;
+}
+
+.details-panel h4 {
+  color: whitesmoke;
+}
+
+.details-panel p {
+  font-size: 14px;
+  color: #8b949e;
+}
+
+.details-panel a {
+  color: #58a6ff;
+  font-weight: 500;
+}
+
+.details-panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.details-panel li {
+  padding: 8px 0;
+  border-bottom: 1px solid #30363d;
+}
+
+.details-panel li a {
+  font-size: 14px;
+}
+
+.details-panel img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+}
+
+.details-panel.empty {
+  color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.topbar {
+  height: 56px;
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #30363d;
+  color: #c9d1d9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 16px;
+}
+
+.topbar strong {
+  font-size: 30px;
+  letter-spacing: 0.3px;
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-user span {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.topbar-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+/* .btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+} */
+
+.btn-link {
+  background: transparent;
+  color: #57606a;
+  border: none;
+}
+
+.btn-link:hover {
+  color: #24292f;
+  text-decoration: underline;
 }
